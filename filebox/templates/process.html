@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+    <script>
+        var interval = null;
+        function atualizar(){
+            $.get("/progress/0/{{ task.uuid }}/", function( data ) {
+                var tokens = data.split('::');
+                var percentual = tokens[0];
+                var message = tokens[1];
+                var file = tokens[2];
+                var url = tokens[3];
+                var alert = $("#alert");
+                if (message.length > 0){
+                    alert.removeClass('alert').addClass('info');
+                    alert.html(message);
+                    if (interval!=null) {
+                        clearTimeout(interval);
+                    }
+                    $(".progress").html('100 %');
+                    var button = $("#button");
+                    if(url && url!='..') button.prop('href', url);
+                    button.removeClass('hidden');
+                    $("#sendmail").hide();
+                    if(file){
+                        document.location.href = "/process/1/{{ task.uuid }}/"
+                    }
+                } else {
+                    $(".progress").html(percentual + '%');
+                }
+            });
+        }
+        interval = setInterval(atualizar, {{ interval }});
+    </script>
+{% endblock %}
+
+{% block body %}
+    <p class="msg alert" id="alert">Sua solicitação está sendo processada. Por favor, aguarde!</p>
+    <div id="percentual" class="progress">{{ task.get_progress }}%</div>
+    <div class="text-center">
+        <a href="javascript:window.history.back();" class="btn success hidden" id="button">Continuar</a>
+    </div>
+{% endblock %}

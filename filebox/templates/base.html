@@ -1,0 +1,21 @@
+<html>
+<head>
+    <title>File Share</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    {% block extrahead %}{% endblock %}
+</head>
+<body>
+<header>
+    {% if request.user.is_authenticated %}
+        {{ request.user }}
+        <a href="/logout">Logout</a>
+    {% endif %}
+</header>
+{% block body %}{% endblock %}
+<footer>
+    {% block extrafoot %}{% endblock %}
+    <div>{{ request.get_host }}</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block body %}
+    <h1>File Share</h1>
+    {% if request.user.is_authenticated %}
+        <a href="/upload">Upload File</a>
+        <a href="/download">Download Files</a>
+        <h2>Uploaded Files</h2>
+        {% if files.exists %}
+            <ul>
+            {% for file in files %}
+                <li><a href="/media/{{ file.file }}">{{ file.name }}</a></li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No file uploaded yet!</p>
+        {% endif %}
+    {% else %}
+        <p style="text-align:center">
+            <a href="/login">Login</a>
+        </p>
+    {% endif %}
+{% endblock %}
+
+{% block extrafoot %}
+    <div>Last update at {{ now }}</div>
+{% endblock %}
